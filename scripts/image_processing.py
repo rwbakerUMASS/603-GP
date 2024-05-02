@@ -1,30 +1,15 @@
 #!/usr/bin/env python3
 import rospy
 import numpy as np
-import time
-from nav_msgs.msg import Odometry
-from sensor_msgs.msg import LaserScan
-from std_msgs.msg import Header
-from nav_msgs.msg import OccupancyGrid
-from geometry_msgs.msg import Twist, PoseArray, Pose
-from gazebo_msgs.msg import ModelState
-from gazebo_msgs.srv import SetModelState, GetModelState
+from geometry_msgs.msg import Twist
 import math
 import cv2
-import os
-import random
-from scipy import ndimage, stats
-import tf
-import pickle
+from scipy import stats
 import matplotlib.pyplot as plt
 from ultralytics import YOLO
-from PIL import Image as PIL_Image
 from sensor_msgs.msg import Image as sensor_msgs_Image
-# from sensor_msgs.msg import CompressedImage as sensor_msgs_Image
-from ultralytics.utils.plotting import Annotator
 from cv_bridge import CvBridge
 import message_filters
-import pyrealsense2 as rs
 
 class Image_Processor:
     def __init__(self) -> None:

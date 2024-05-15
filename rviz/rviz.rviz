@@ -9,6 +9,8 @@ Panels:
         - /Camera1/Visibility1
         - /Camera2
         - /Camera2/Visibility1
+        - /MarkerArray1
+        - /Axes1
       Splitter Ratio: 0.5
     Tree Height: 690
   - Class: rviz/Selection
@@ -77,10 +79,13 @@ Visualization Manager:
       Unreliable: false
       Value: true
       Visibility:
+        Axes: true
         Camera: true
         Grid: false
         Image: true
         LaserScan: false
+        Marker: true
+        MarkerArray: true
         Value: true
       Zoom Factor: 1
     - Alpha: 1
@@ -122,12 +127,41 @@ Visualization Manager:
       Unreliable: false
       Value: true
       Visibility:
+        Axes: true
         Camera: false
         Grid: false
         Image: true
         LaserScan: false
+        Marker: true
+        MarkerArray: true
         Value: true
       Zoom Factor: 1
+    - Class: rviz/MarkerArray
+      Enabled: true
+      Marker Topic: /viz
+      Name: MarkerArray
+      Namespaces:
+        {}
+      Queue Size: 100
+      Value: true
+    - Alpha: 1
+      Class: rviz/Axes
+      Enabled: true
+      Length: 0.5
+      Name: Axes
+      Radius: 0.009999999776482582
+      Reference Frame: <Fixed Frame>
+      Show Trail: false
+      Value: true
+    - Class: rviz/Marker
+      Enabled: true
+      Marker Topic: /visualization_marker
+      Name: Marker
+      Namespaces:
+        LEGS: true
+        PEOPLE: true
+      Queue Size: 100
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -156,7 +190,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 10
+      Distance: 4.31913948059082
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -172,9 +206,9 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.785398006439209
+      Pitch: 0.994796872138977
       Target Frame: <Fixed Frame>
-      Yaw: 0.785398006439209
+      Yaw: 3.115396738052368
     Saved: ~
 Window Geometry:
   Camera:

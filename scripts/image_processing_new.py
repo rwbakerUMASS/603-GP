@@ -36,6 +36,7 @@ class Image_Processor:
         self.rgb_img = None
         self.depth_img = None
         self.new_frame = False
+        self.color = None
     
     def get_human_speed(self) -> float:
         return self.human_speed
@@ -189,13 +190,15 @@ class Triton:
         self.vel_pub = rospy.Publisher('/cmd_vel', Twist, queue_size=10)
         self.vel_cmd = Twist()
         self.lidar = lp.Lidar()
-    
+
     def move_to_human(self, goal_dist=1000, max_speed=0.5, min_speed=-0.3) -> None:
         angle = self.camera.get_angle()
         if abs(angle) > 0.1:
             self.vel_cmd.angular.z = -0.5 * angle
         else:
             self.vel_cmd.angular.z = 0
+        
+        behind = np.array(self.lidar.scan)[250:290]
 
         if not self.camera.get_dist():
             self.vel_cmd.linear.x = 0
@@ -203,6 +206,8 @@ class Triton:
             return
         dist = self.camera.get_dist() - goal_dist
         self.vel_cmd.linear.x = max(min(0.5 * (dist/1000),max_speed),min_speed)
+        if np.nanmin(behind) < 0.3 and self.vel_cmd.linear.x < 0:
+            self.vel_cmd.linear.x = 0
         self.vel_pub.publish(self.vel_cmd)
 
     # def move_to_human_var(self, goal_dist=1000, max_speed=1.3, min_speed=-0.3) -> None:
@@ -220,7 +225,7 @@ class Triton:
         self.vel_pub.publish(self.vel_cmd)
 
     def run(self) -> None:
-        while not self.lidar.is_lidar_available():
+        while not self.lidar.is_lidar_available() or self.camera.img_processor.color:
             time.sleep(1)
         times_human_not_found = 0
         while not rospy.is_shutdown():

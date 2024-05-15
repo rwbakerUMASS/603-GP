@@ -1,0 +1,6 @@
+<launch>
+    <include file="$(find stingray_camera)/launch/triton_amcl.launch" />
+    <include file="$(find leg_detector)/launch/filtered_leg_detector.launch"/>
+    
+    <node pkg="map_server" type="map_server" name="map_server" args="$(find 603-GP)/map/map.yaml" />
+</launch>

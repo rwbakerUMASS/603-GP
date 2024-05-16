@@ -12,6 +12,7 @@ from cv_bridge import CvBridge
 import message_filters
 import lidar_processing as lp
 import time
+import pickle
 
 class Image_Processor:
     def __init__(self) -> None:
@@ -71,7 +72,6 @@ class Image_Processor:
         # if self.rgb_img is not None:
         #     print('GOT NEW COLOR FRAME {:3f}'.format((self.depth_img.header.stamp.to_time()-self.rgb_img.header.stamp.to_time())))
         #     print('GOT NEW DEPTH FRAME {:3f}'.format((depth_img.header.stamp.to_time()-self.depth_img.header.stamp.to_time())))
-        print(time.time())
         self.new_frame = True
         self.rgb_img = rgb_img
         self.depth_img = depth_img
@@ -191,6 +191,11 @@ class Triton:
         self.vel_cmd = Twist()
         self.lidar = lp.Lidar()
 
+        # METRICS
+        self.angle_metric = []
+        self.human_visible_metric = []
+        self.dist_metric = []
+
     def move_to_human(self, goal_dist=1000, max_speed=0.5, min_speed=-0.3) -> None:
         angle = self.camera.get_angle()
         if abs(angle) > 0.1:
@@ -232,14 +237,25 @@ class Triton:
 
             self.camera.check_for_human()
             if self.camera.img_processor.human_detected:
+
+                # RECORD ANGLE
+                self.human_visible_metric.append(1)
+                self.angle_metric.append(self.camera.get_angle())
+
                 times_human_not_found = 0
                 # if self.camera.img_processor.new_frame:
                 self.camera.process()
+                self.dist_metric.append(self.camera.get_dist())
                 # else:
                 #     self.camera.img_processor.dist = None
                 self.move_to_human()
 
             else:
+                # RECORD LAST IN PLACE OF UNK ANGLE
+                self.angle_metric.append(self.angle_metric[-1])
+                self.human_visible_metric.append(0)
+                self.dist_metric.append(self.dist_metric[-1])
+
                 times_human_not_found += 1
                 self.stop()
                 if times_human_not_found > 5:
@@ -280,4 +296,5 @@ if __name__ == '__main__':
         triton = Triton(camera, rate)
         triton.run()
     except Exception as e:
+        pickle.dump(triton.angle_metric,open('angle_metric','wb'))
         print(e)

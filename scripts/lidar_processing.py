@@ -38,7 +38,7 @@ class Lidar:
                 y = pos.y
                 reliability.append(pos_est.reliability)
                 angles.append(math.degrees(math.atan2(y, x)))
-            sort_idx = np.argsort(np.abs(angles))
+            sort_idx = np.argsort(reliability)
             angles = np.array(angles)
             angles = angles[sort_idx]
         return angles

@@ -1,3 +1,7 @@
+# CS-603 Group Project: Human Following Robot
+Kevin Antony Gomez, Ryan Baker, and Chunru Lin
+
+
 To Set Up:
 1. package.xml contains all dependencies, runnning rosdep will install all required packages
 2. Requires making a change to lfilter.launch and filters.yaml inside map_laser package

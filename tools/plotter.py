@@ -30,7 +30,7 @@ for key in people.keys():
     y = people[key]['y']
     t = people[key]['t']
     # plt.imshow(metric_map, cmap='gray')
-    plt.scatter(x,y)
+    # plt.scatter(x,y)
     # plt.plot(t,np.arctan2(y,x))
     # plt.plot(angle)
 # plt.show()
@@ -41,14 +41,31 @@ for pos in pose:
     x.append(pos[0][0])
     y.append(pos[0][1])
     # plt.imshow(metric_map, cmap='gray')
-plt.scatter(x,y)
+# plt.scatter(x,y)
+# plt.show()
+
+N=10
+plt.plot(np.convolve(np.array(angle)[100:300],np.ones(N)/N))
+plt.hlines([0],xmin=0,xmax=200,colors=['black'])
+plt.ylabel('Angle (rad)')
+plt.xlabel('Time (s)')
+plt.savefig('/home/rwbaker/catkin_ws/src/603-GP/res/angle.png')
 plt.show()
 
-plt.plot(angle)
+dist = np.array(dist)[100:300]
+for i in range(200):
+    if dist[i] is None:
+        dist[i] = dist[i-1]
+
+plt.plot(np.convolve(dist+200,np.ones(N)/N))
+plt.ylabel('Dist (mm)')
+plt.xlabel('Time (s)')
+plt.hlines([1000],xmin=0,xmax=200,colors=['black'])
+plt.savefig('/home/rwbaker/catkin_ws/src/603-GP/res/dist.png')
 plt.show()
 
-plt.plot(dist)
-plt.show()
-
-plt.plot(np.convolve(human_visible,np.ones(20)/20,'valid'))
+plt.plot(np.convolve(np.array(human_visible)[100:300],np.ones(N)/N,'valid'))
+plt.ylabel('Percent of Time Human is Visible')
+plt.xlabel('Time (s)')
+plt.savefig('/home/rwbaker/catkin_ws/src/603-GP/res/visible.png')
 plt.show()

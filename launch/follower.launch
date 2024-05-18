@@ -1,8 +1,20 @@
 <launch>
-    <include file="$(find stingray_camera)/launch/triton_amcl.launch" />
-    <include file="$(find leg_detector)/launch/filtered_leg_detector.launch"/>
-
-    <node pkg="603-GP" type="image_processing.py" name="triton_follower"/>
     
     <node pkg="map_server" type="map_server" name="map_server" args="$(find 603-GP)/map/map.yaml" />
+
+    <include file="$(find stingray_camera)/launch/triton_amcl.launch" />
+
+    <!-- Filtered Leg Detector -->
+    <include file="$(find map_laser)/lfilter.launch"/>
+    <node pkg="leg_detector" type="leg_detector" name="leg_detector"
+        args="scan:=base_scan_filter $(find leg_detector)/config/trained_leg_detector.yaml">
+
+        <param name="fixed_frame" value="base_scan"/>
+        <param name="leg_reliability_limit" value="1.8"/>
+        <param name="min_points_per_group" value="15"/>
+        <param name="publish_people_markers" value="false"/>
+        <param name="publish_people" value="false"/>
+    </node>
+
+    <node pkg="603-GP" type="image_processing.py" name="triton_follower"/>
 </launch>

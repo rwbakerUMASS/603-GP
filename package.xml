@@ -13,7 +13,7 @@
   <url type="website">https://github.com/rwbakerUMASS/603-GP</url>
 
   <buildtool_depend>catkin</buildtool_depend>
-  
+
   <build_depend>roscpp</build_depend>
   <build_depend>rospy</build_depend>
   <build_depend>std_msgs</build_depend>
@@ -28,6 +28,7 @@
   <exec_depend>leg_detector</exec_depend>
   <exec_depend>stingray_camera</exec_depend>
   <exec_depend>map_server</exec_depend>
+  <exec_depend>map_laser</exec_depend>
 
 
   <!-- The export tag contains other, unspecified, tags -->
